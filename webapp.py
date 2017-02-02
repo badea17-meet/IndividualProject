@@ -3,6 +3,7 @@ from flask import session as login_session
 from database_setup import *
 from werkzeug.utils import secure_filename
 import locale, os
+from datetime import datetime
 
 
 
@@ -46,6 +47,7 @@ def Home():
         login_session['id'] = user.ID
         login_session['firstname'] = user.FirstName
         login_session['lastname'] = user.LastName
+        login_session['pic'] = user.ImageURL
         return redirect(url_for('Home'))
 
 
@@ -76,6 +78,7 @@ def ClientSignUp():
         				Email=email, 
         				Weight = weight,
         				Height = height,
+                        Birthday = birthday,
         				Cellular = cellular,
         				Country = country,
         				Gender = gender)
@@ -106,12 +109,12 @@ def DietitianSignUp():
         country = request.form['country']
         gender = request.form['gender']
         picture = request.files['picture']
-        if firstname == "" or lastname == "" or email == "" or password == "" or confirmpassword == "" or confirmpassword != password or not allowed_file(picture):
+        if firstname == "" or lastname == "" or email == "" or password == "" or confirmpassword != password or confirmpassword == "" or not allowed_file(picture.filename):
             flash("Your form is missing arguments")
-            return redirect(url_for('ClientSignUp'))
+            return redirect(url_for('DietitianSignUp'))
         if session.query(Dietitian).filter_by(Email = email).first() is not None:
-            flash("A user with this email address already exists")
-            return redirect(url_for('ClientSignUp'))
+            flash("A user with this email address already esxists")
+            return redirect(url_for('DietitianSignUp'))
 
         for x in aoelist:
             print x    
@@ -125,23 +128,56 @@ def DietitianSignUp():
         				Email=email, 
         				AOE = aoe,
         				YOE = yoe,
+                        Birthday = birthday,
         				Cellular = cellular,
         				Country = country,
-        				Gender = gender)	
+        				Gender = gender)
+        session.add(dietitian)
+        session.commit()
         filename = str(dietitian.ID) + "_" + secure_filename(picture.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         dietitian.set_photo(filename)
         dietitian.hash_password(password)
-        session.add(dietitian)
         session.commit()
         flash("User Created Successfully!")
         return redirect(url_for('Home'))
     else:
         return render_template('DietitianSignUp.html')
 
-@app.route("/product/<int:product_id>")
-def product(product_id):
-	return "To be implemented"
+
+@app.route("/DietitianSessions", methods = ['GET', 'POST'])
+def DietitianSessions():
+    diet_list = session.query(Appointment).filter_by(Dietitian_id = login_session['id']).all()
+    flag = True
+    if not diet_list:
+        flag = False
+
+    if request.method == 'GET':
+        return render_template('DietitianSessions.html', diet_list=diet_list, flag = flag)
+    else:
+
+        time = request.form['date'] + " " + request.form['time']
+        date = datetime.strptime(time, "%Y-%m-%d %H:%M")
+        dietitian = session.query(Dietitian).filter_by(ID = login_session['id']).one()
+        appointment = Appointment(Time = date,
+                                  Dietitian = dietitian,
+                                  Dietitian_id = login_session['id']) 
+        session.add(appointment)
+        session.commit()
+        return redirect(url_for('DietitianSessions'))
+
+
+@app.route("/Booking", methods = ['GET', 'POST'])
+def Booking():
+    availablesessions = session.query(Appointment).filter_by(Client = None).all()
+    images = []
+    for i in availablesessions:
+        images.append(i.Dietitian.ImageURL)
+    length = len(images)
+    if request.method == 'GET':
+        return render_template("Booking.html", sessions = availablesessions, images = images, length = length)
+
+
 
 @app.route("/product/<int:product_id>/addToCart", methods = ['POST'])
 def addToCart(product_id):

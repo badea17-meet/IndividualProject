@@ -1,245 +1,87 @@
     <!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 
-    <meta charset="utf-8">
-    <meta name="description" content="">
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <title>Welcome FatFit</title>
+        <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="images/favicon.png">
+        <script src="{{ url_for('static',filename='js/pace.js') }}"></script>
 
-
-
-
-    <title>Welcome FatFit</title>
-
-    
-
-    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css">
-
-
-    <!--[if lt IE 9]>
-	  <script src="js/html5shiv.js"></script>
-	  <script src="js/respond.min.js"></script>
-	<![endif]-->
-
-    <link rel="shortcut icon" href="images/favicon.png">
-    <script src="{{ url_for('static',filename='js/pace.js') }}"></script>
-
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
-</head>
-<body>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
 
         <div class="preloader"></div>
 
         <nav class='navbar navbar-inverse'>
             <div class='navbar-header'>
-            <a class='navbar-brand'>Welcome!</a></div>
-            <ul class='nav navbar-nav'>
-            <li><a href='Home.aspx'>Home</a></li>
-            <li><a href='ShowClientSessions.aspx'>My Sessions</a></li>
-            <li><a href='ShowDietitians.aspx'>All Dietitians</a></li>
-            <li><a href='ClientSettings.aspx'>Edit My Data</a></li></ul>
-            <li class='nav navbar-nav navbar-right'><input type='submit' class='btn btn-primary' value='Log Out' name='logout'></li></div>
-        </nav>
-
-           
-           <main id="top" class="masthead" role="main">   
-
-        
-        <div class="container">
-
-            
-            <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
-                    <font color="white"><h1>Eating <strong>Healthy</strong> just got a little easier with us <br>
-             <strong>Do not ruin</strong> your diet.</h1></font>
-            </asp:ContentPlaceHolder>
-
-                       {% block content%}
-                       
-           {% endblock %}
-
-            <p>SCROLL DOWN TO EXPLORE</p>
-            <p class="scrollto--arrow">
-                <img src="{{url_for('static', filename='images/scroll_down.png')}}" alt="scroll down arrow" />
-            </p>
-        </div>
-	</main>
- 
+                <a class='navbar-brand'>Welcome!</a></div>
+                <ul class='nav navbar-nav'>
+                    <li><a href='Home.aspx'>Home</a></li>
+                    <li><a href='ShowClientSessions.aspx'>My Sessions</a></li>
+                    <li><a href='ShowDietitians.aspx'>All Dietitians</a></li>
+                    <li><a href='ClientSettings.aspx'>Edit My Data</a></li></ul>
+                    <li class='nav navbar-nav navbar-right'><input type='submit' class='btn btn-primary' value='Log Out' name='logout'></li></div>
+                </nav>
 
 
-        <div class="container" id="explore">
-
-            
-                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                    
-                </asp:ContentPlaceHolder>
-            
-
-
-
-            
-
-            <section class="row heroimg breath">
-                <div class="col-md-12 text-center">
-                    <img src="{{url_for('static', filename='images/logoscreen.png')}}" width="900" height="700">
-                </div>
-            </section>
- 
-            
-
-
-            
-        </div>
- 
-
-	
-        <div class="highlight testimonials">
-            <div class="container">
-                <div class="section-title">
-                    <h2>What our customers said</h2>
-                    <h4>Don't take our word. See our testimonials </h4>
-                </div>
-
-                <section class="row breath">
-                    <div class="col-md-6">
-                        <div class="testblock">"FitFat has made a tremendous difference in my life! My partner and I have been using this website for over one and a half year. My partner lost about 20 pounds in the first few months, without counting portions or calories, and has maintained his ideal weight without much effort. Thanks to the dietitians team of experts </div>
-                        <div class="clientblock">
-                            <img src="{{url_for('static', filename='images/customer-img-3.jpg')}}" alt=".">
-                            <p>
-                                <strong>Bayan Nijim</strong>
-                                
-						
-                            </p>
-                        </div>
+                <main id="top" class="masthead" role="main">   
+                    <div class="container">
+                        <font color="white"><h1>Eating <strong>Healthy</strong> just got a little easier with us <br>
+                           <strong>Do not ruin</strong> your diet.</h1></font>
+                           <p>SCROLL DOWN TO EXPLORE</p>
+                           <p class="scrollto--arrow">
+                            <img src="{{url_for('static', filename='images/scroll_down.png')}}" alt="scroll down arrow" />
+                        </p>
                     </div>
-					
-				
+                </main>
 
-                    <div class="col-md-6">
-                        <div class="testblock">"My trainer recommended FitFat to me, but I was concerned that is would be too time consuming and difficult to use...But it's easy! After a few weeks, it's just a couple of clicks and you're done! If you're serious about fitness or weight loss or eating better, FitFat is an excellent way to keep you in check and on track." </div>
-                        <div class="clientblock">
-                            <img src="{{url_for('static', filename='images/customer-img-2.jpg')}}" alt=".">
-                            <p>
-                                <strong>Rami Matar</strong>
-						
-                            </p>
+
+
+                <div class="container" id="explore">
+                    {% block content %}
+
+                    {% endblock %}
+
+                </div>
+
+                <div class="container">
+                    <section class="row breath">
+                        <div class="col-md-12 footerlinks">
+                            <p>&copy; 2014 BlackTie.co. All Rights Reserved</p>
                         </div>
-                    </div>
-			
-                </section>
- 
-		
-            </div>
-	
-        </div>
- 
-
-	
-        <div class="container">
+                    </section>
 
 
-            <asp:ContentPlaceHolder ID="ContentPlaceHolder4" runat="server">
-            </asp:ContentPlaceHolder>
-
- 
-	
-
-            <div class="section-title">
-                <h5>Frequently Asked Questions</h5>
-            </div>
-
-            <section class="row faq breath">
-                <div class="col-md-6">
-                    <h6>How does the free trial work?</h6>
-                    <p>Our 30 day trial is completely free and does not require credit card information to start. If at the end of your trial you would like to upgrade, great. If not, you can cancel your account altogether, or let us mark it as inactive for you to come back to later.</p>
-                    <h6>Can I switch plans later?</h6>
-                    <p>Absolutely. You can switch between our paid plans, or cancel your account altogether, whenever you like. We will adjust any payments accordingly.</p>
-                </div>
-                
-			
-		
-
-                <div class="col-md-6">
-                    <h6>Can I cancel a booked session?</h6>
-                    <p>Yes, you need to send a message to the dietitian you booked with in order to cancel the session.</p>
-                    <h6>What payment types do you accept?</h6>
-                    <p>We accept payments from MasterCard, Visa, Visa Debit and American Express. We do not accept PayPal. Remember, you do not need to supply card details to start your free trial.</p>
                 </div>
 
-	
-            </section>
-
- 
-
-        </div>
-
-	
-       <main class="footercta" role="main">
-			<div class="container">
-            <asp:ContentPlaceHolder id="ContentPlaceHolder5" runat="server">
-        
-                
-			<br />
-	    	<br />
-	    	<font color="white"><h1>Eating <strong>Healthy</strong> just got a little easier with us <br>
-	        <strong>Do not ruin</strong> your diet.</h1></font>
- 
- 		    </asp:ContentPlaceHolder>
-    
-    <br />
-    <br />
-    <br />
-
-            </div>         
-		</main>
-
- 
-	
-
-        <div class="container">
-            <section class="row breath">
-                <div class="col-md-12 footerlinks">
-                    <p>&copy; 2014 BlackTie.co. All Rights Reserved</p>
-                </div>
-            </section>
-
-	
-        </div>
-
- 
- 
- 
- 
+                <script src="{{ url_for('static',filename='js/jquery.js') }}"></script>
+                <script src="{{ url_for('static',filename='js/bootstrap.js') }}"></script>
+                <script src="{{ url_for('static',filename='js/easing.js') }}"></script>
+                <script src="{{ url_for('static',filename='js/nicescroll.js') }}"></script>
+                <script>
 
 
+                    $(function () {
+                        $('.scrollto, .gototop').bind('click', function (event) {
+                            var $anchor = $(this);
+                            $('html, body').stop().animate({
+                                scrollTop: $($anchor.attr('href')).offset().top
+                            }, 1500, 'easeInOutExpo');
+                            event.preventDefault();
+                        });
+                    });
 
 
-        <script src="{{ url_for('static',filename='js/jquery.js') }}"></script>
-        <script src="{{ url_for('static',filename='js/bootstrap.js') }}"></script>
-        <script src="{{ url_for('static',filename='js/easing.js') }}"></script>
-        <script src="{{ url_for('static',filename='js/nicescroll.js') }}"></script>
+                </script>
 
-
-        <script>
-
-
-            $(function () {
-                $('.scrollto, .gototop').bind('click', function (event) {
-                    var $anchor = $(this);
-                    $('html, body').stop().animate({
-                        scrollTop: $($anchor.attr('href')).offset().top
-                    }, 1500, 'easeInOutExpo');
-                    event.preventDefault();
-                });
-            });
-
-
-</script>
-  
-
-</body>
-</html>
+    </body>
+    </html>

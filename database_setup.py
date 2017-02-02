@@ -20,10 +20,9 @@ class Client(Base):
 	Cellular = Column(String)
 	Height = Column(Float)
 	Weight = Column(Float)
-	Birthday = Column(Date)
+	Birthday = Column(String)
 	password_hash = Column(String(255))
-	session_id = Column(Integer, ForeignKey('appointment.id'))
-	sessions = relationship("Appointment")
+	sessions = relationship("Appointment", back_populates ="Client")
 
 	def hash_password(self, password):
 		self.password_hash = pwd_context.encrypt(password)
@@ -35,7 +34,7 @@ class Client(Base):
 		self.ImageURL = photo
 
 class Dietitian(Base):
-	__tablename__ = 'ditetitian'
+	__tablename__ = 'dietitian'
 	ID = Column(Integer, primary_key=True)
 	FirstName = Column(String)
 	LastName = Column(String)
@@ -46,10 +45,9 @@ class Dietitian(Base):
 	Cellular = Column(String)
 	YOE = Column(Float)
 	AOE = Column(String)
-	Birthday = Column(Date)
+	Birthday = Column(String)
 	password_hash = Column(String(255))
-	session_id = Column(Integer, ForeignKey('appointment.id'))
-	sessions = relationship("Appointment")
+	sessions = relationship("Appointment", back_populates ="Dietitian")
 
 	def hash_password(self, password):
 		self.password_hash = pwd_context.encrypt(password)
@@ -58,17 +56,18 @@ class Dietitian(Base):
 		return pwd_context.verify(password, self.password_hash)
 
 	def set_photo(self, photo):
-		self.ImageURL = ImageURL
+		self.ImageURL = photo
 
 
 
 class Appointment(Base):
 	__tablename__ = 'appointment'
-	id = Column(Integer, primary_key=True)
-	Client = relationship("Client")
+	ID = Column(Integer, primary_key=True)
+	Client = relationship("Client", back_populates ="sessions")
 	Time = Column(DateTime)
-	Dietitian = relationship("Dietitian")
-	Filled = Column(Boolean)
+	Dietitian = relationship("Dietitian", back_populates ="sessions")
+	Dietitian_id = Column(Integer, ForeignKey('dietitian.ID'))
+	Client_id = Column(Integer, ForeignKey('client.ID'))
 
 
 

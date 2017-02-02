@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+{%extends "MasterPage.html"%}
+	{%block content%}
+	<br/><br/><br/>
+	<div class="jumbotron">
+		<h1> Booking </h1>    
+		<p> Book a session in order to stay in shape</p>
+	</div>
+
+<table border='0' width='100%'>
+<tr bgcolor='#ebebe0'><td><b><h4> Dietitian </h4></b></td> <td><b><h4> When </h4></b></td> <td><b><h4> Actions </h4></b></td></tr>
+
+{%if sessions is none%}
+	<tr><td><h4 style="text-align:center">No Available Sessions</h4></td></tr>
+{%else%}
+{%for i in range(length)%}
+	<tr>
+	<td><font size='4'>  </font><img src = "{{images[i]}}"  class='img-rounded' width='100' height='100' /></td>
+	<td>{{sessions[i].Time}} </td>
+	<div class='form-group'><div class='col-sm-offset-2 col-sm-10'>
+	<td><input type='submit' value='Book This Session' name='book{{sessions[i]}}' class='btn btn-success btn-lg'/></td>
+	</div></div>
+	</tr>
+{%endfor%}
+{%endif%}
+
+
+
+{%endblock%}
+</body>
+</html>

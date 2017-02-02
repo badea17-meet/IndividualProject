@@ -48,7 +48,10 @@ if __name__ == '__main__':
         hline = '\n' + '-' * len(header) + '\n'
         table_string += hline + header + hline
 
-        row_strings = '\n'.join([row_format.format(*row) for row in table_to_print])
+        def make_row(row):
+            row = ['None' if c is None else c for c in row]
+            return row_format.format(*row)
+        row_strings = '\n'.join([make_row(row) for row in table_to_print])
 
         table_string += row_strings
 

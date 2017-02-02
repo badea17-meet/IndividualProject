@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	{%extends "MasterPage.html"%}
+	{%block content%}
+	<br/><br/><br/>
+	<div class="jumbotron">
+		<h1> My Sessions </h1>    
+		<p> Check out your future diet sessions</p>
+	</div>
+
+
+<table border='0' width='100%' style="">
+
+
+       <tr bgcolor='#ebebe0'><td><b><h4> When </h4></b></td> <td><b><h4> Status </h4></b></td> <td><b><h4> Actions </h4></b></td></tr>
+      {% if diet_list is none %}
+      	<tr><td><h4 style="text-align:center">No Available or Booked Sessions</h4></td></tr>
+      {% else %}
+	   {%for i in diet_list%}
+	   		<tr>
+	   	 	<td><font size = '4'> {{i.Time}} </font> </td>
+	   	 	{% if i.Client is none %}
+	   	 		<td><font size = '4'> Available </font></td>
+	   	 		<div class='form-group'><div class='col-sm-offset-2 col-sm-10'>
+	   	 		<td> <input type='submit' value='Delete Session' name='sessions{{i.ID}}' class='btn btn-danger'/> </td>
+	   	 		</div></div>
+	   	 	{% else %}
+	   	 		<td><font size = '7'> Booked with {{i.Client.FirstName}} + {{i.Client.LastName}} "</font></td>
+	   	 		<div class='form-group'><div class='col-sm-offset-2 col-sm-10'>
+	   	 		<td> <input type='submit' value='View Client' name='sessions{{i.ID}}' class='btn btn-info'/></td>
+	   	 		</div></div>
+	   	 	{%endif%}
+	   	 	</tr>
+
+	   {%endfor%}
+	  {%endif%}
+
+</table>
+
+
+	<form action="{{ url_for('DietitianSessions') }}" method = 'post' >
+
+
+		<br/><br/>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="date">Date:</label>
+			<div class="col-sm-3">
+				<input type="date" class="form-control" id="date" name="date" value="Date">
+			</div>
+		</div>
+
+		<br />
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="from">Time:</label>
+			<div class="col-sm-3">
+				<input type="time" class="form-control" id="time" name="time" value="From">
+			</div>
+		<br/><br />
+
+		<div class="form-group">        
+			<div class="col-sm-offset-2 col-sm-10">
+				<input type="submit" value="Add Session"  class="btn btn-primary"/>
+			</div>
+		</div>
+
+	</div>
+</form>
+{%endblock%}
+</body>
+</html>
