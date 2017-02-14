@@ -21,19 +21,18 @@
 
         <div class="preloader"></div>
 
-        <nav class='navbar navbar-inverse'>
+                <main id="top" class="masthead" role="main">
+                        <nav class='navbar navbar-inverse'>
             <div class='navbar-header'>
                 <a class='navbar-brand'>Welcome!</a></div>
                 <ul class='nav navbar-nav'>
                     <li><a href='Home.aspx'>Home</a></li>
                     <li><a href='ShowClientSessions.aspx'>My Sessions</a></li>
                     <li><a href='ShowDietitians.aspx'>All Dietitians</a></li>
-                    <li><a href='ClientSettings.aspx'>Edit My Data</a></li></ul>
-                    <li class='nav navbar-nav navbar-right'><input type='submit' class='btn btn-primary' value='Log Out' name='logout'></li></div>
-                </nav>
-
-
-                <main id="top" class="masthead" role="main">   
+                    <li><a href='ClientSettings.aspx'>Edit My Data</a></li>
+                    <li class='nav navbar-nav navbar-right'><input type='submit' class='btn btn-primary' value='Log Out' name='logout'></li>
+                </ul>
+        </nav>   
                     <div class="container">
                         <font color="white"><h1>Eating <strong>Healthy</strong> just got a little easier with us <br>
                            <strong>Do not ruin</strong> your diet.</h1></font>
@@ -47,7 +46,7 @@
 
 
                 <div class="container" id="explore">
-                    {% block content %}
+                 {% block content %}
 
                     {% endblock %}
 
@@ -58,7 +57,7 @@
                         <div class="col-md-12 footerlinks">
                             <p>&copy; 2014 BlackTie.co. All Rights Reserved</p>
                         </div>
-                    </section>
+                    </section>  
 
 
                 </div>

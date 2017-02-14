@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+{%extends "MasterPage.html"%}
+{%block content%}
+
+<form action="{{ url_for('ClientSessions'), client_id = login_session['id']) }}"
+
+
+<table border='0' width='100%'>
+<tr bgcolor='#ebebe0'><td><b><h4> When </h4></b></td> <td><b><h4> Who is my dietitian? </h4></b></td></tr>
+{% if mysessions is none%}
+	<tr><td><h4 style="text-align:center">No Booked Sessions</h4></td></tr>
+{%else%}
+{%for i in len(length)%}
+
+	{% if i%2 != 0%}
+		<tr bgcolor='#f5f5f0'>
+	{%else%}
+		<tr>
+	{%endif%}
+
+	<td><font size="4">{{mysessions[i].Time}}</font></td>
+	<td><font size="4">{{mysessions[i].Dietitian.FirstName}} {{mysession[i].Dietitian.LastName}}</font></td>
+{%endfor%}
+
+{%endif%}
+</table>
+
+<br/><br/><br/>
+<a href="Booking.html"><input type='submit' value='Book a Session' name='BookSession' class='btn btn-info'/></a>
+
+{%endblock%}
+</body>
+</html>

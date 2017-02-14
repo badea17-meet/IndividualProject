@@ -148,16 +148,29 @@ def DietitianSignUp():
 @app.route("/DietitianSessions", methods = ['GET', 'POST'])
 def DietitianSessions():
     diet_list = session.query(Appointment).filter_by(Dietitian_id = login_session['id']).all()
-    flag = True
-    if not diet_list:
-        flag = False
+
+    dates = []
+    times= []
+    for i in diet_list:
+        x = i.Time.strftime("%d %B %Y")
+        if x[0] == '0':
+            x = x[1:]
+        dates.append(x)
+
+        x = i.Time.strftime("%I:%M %p")
+        if x[0] == '0':
+            x = x[1:]
+        times.append(x)
 
     if request.method == 'GET':
-        return render_template('DietitianSessions.html', diet_list=diet_list, flag = flag)
+        return render_template('DietitianSessions.html', diet_list=diet_list, length = len(diet_list),dates = dates, times = times)
     else:
 
         time = request.form['date'] + " " + request.form['time']
         date = datetime.strptime(time, "%Y-%m-%d %H:%M")
+        if datetime.now() > date:
+            flash("Wront Date and Time")
+            return  redirect(url_for('DietitianSessions'))
         dietitian = session.query(Dietitian).filter_by(ID = login_session['id']).one()
         appointment = Appointment(Time = date,
                                   Dietitian = dietitian,
@@ -171,17 +184,40 @@ def DietitianSessions():
 def Booking():
     availablesessions = session.query(Appointment).filter_by(Client = None).all()
     images = []
+    dates = []
+    times = []
+
     for i in availablesessions:
         images.append(i.Dietitian.ImageURL)
+
+        x = i.Time.strftime("%d %B %Y")
+        if x[0] == '0':
+            x = x[1:]
+        dates.append(x)
+
+        x = i.Time.strftime("%I:%M %p")
+        if x[0] == '0':
+            x = x[1:]
+        times.append(x)
+
+
+
     length = len(images)
     if request.method == 'GET':
-        return render_template("Booking.html", sessions = availablesessions, images = images, length = length)
+        return render_template("Booking.html", sessions = availablesessions, images = images, length = length, dates = dates, times = times)
+
+@app.route("/MySessions")
+def MySessions(client_id):
+    mysessions = session.query(Appointment).filter_by(client_id = client_id).all()
+    return render_template("ClientSessions.html", mysessions = mysessions, length=len(mysessions))
+
+def DeleteSession(ID):
+    if request.methods == 'POST':
+        appointment = session.query(Appointment).filter_by(ID = ID).first()
+        session.delete(appointment)
+        session.commit()
 
 
-
-@app.route("/product/<int:product_id>/addToCart", methods = ['POST'])
-def addToCart(product_id):
-	return "To be implemented"
 
 @app.route("/shoppingCart")
 def shoppingCart():
