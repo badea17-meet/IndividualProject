@@ -29,11 +29,13 @@
 	{%else%}
 		<tr>
 	{%endif%}
-	<td><font size='4'>  </font><img src = "uploads/{{images[i]}}"  class='img-rounded' width='100' height='100' /></td>
+	<td><font size='4'>  </font><img src = {{url_for("uploaded_file", filename = images[i]|string)}}  class='img-rounded' width='100' height='100' /></td>
 	<td><font size="4">{{dates[i]}} <br/> {{times[i]}} </font> </td>
+	<form action="{{ url_for('BookSession', ID = sessions[i].ID) }}" method="POST">
 	<div class='form-group'><div class='col-sm-offset-2 col-sm-10'>
 	<td><input type='submit' value='Book This Session' name='book{{sessions[i]}}' class='btn btn-success btn-lg'/></td>
 	</div></div>
+	</form>
 	</tr>
 {%endfor%}
 {%endif%}

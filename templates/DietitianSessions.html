@@ -30,13 +30,13 @@
 				<td><font size = '4'> {{dates[i]}} <br/> {{times[i]}} </font> </td>
 				{% if diet_list[i].Client is none %}
 				<td><font size = '4'> Available </font></td>
-				<form action = " {{ url_for('DeleteSession', diet_list[i].ID) }}" method="post">
+				<form action = " {{ url_for('DeleteSession', ID=diet_list[i].ID) }}" method="post">
 				<div class='form-group'><div class='col-sm-offset-2 col-sm-10'>
 				<td> <input type='submit' value='Delete Session' name='sessions{{i.ID}}' class='btn btn-danger'/> </td>
 				</div></div>
 				</form>
 				{% else %}
-				<td><font size = '4'> Booked with {{diet_list[i].Client.FirstName}} + {{diet_list[i].Client.LastName}} "</font></td>
+				<td><font size = '4'> Booked with {{diet_list[i].Client.FirstName}} {{diet_list[i].Client.LastName}} </font></td>
 				<div class='form-group'><div class='col-sm-offset-2 col-sm-10'>
 					<td> <input type='submit' value='View Client' name='sessions{{i.ID}}' class='btn btn-info'/></td>
 				</div></div>

@@ -1,4 +1,4 @@
-from flask import Flask, url_for, flash, redirect, request, render_template
+from flask import Flask, url_for, flash, redirect, request, render_template, send_from_directory
 from flask import session as login_session
 from database_setup import *
 from werkzeug.utils import secure_filename
@@ -27,6 +27,9 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/')
 @app.route('/Home', methods = ['GET', 'POST'])
@@ -70,6 +73,7 @@ def ClientSignUp():
         if firstname == "" or lastname == "" or email == "" or password == "" or confirmpassword != password or confirmpassword == "" or not allowed_file(picture.filename):
             flash("Your form is missing arguments")
             return redirect(url_for('ClientSignUp'))
+        
         if session.query(Client).filter_by(Email = email).first() is not None:
             flash("A user with this email address already exists")
             return redirect(url_for('ClientSignUp'))
@@ -199,49 +203,35 @@ def Booking():
         if x[0] == '0':
             x = x[1:]
         times.append(x)
-
-
-
     length = len(images)
     if request.method == 'GET':
         return render_template("Booking.html", sessions = availablesessions, images = images, length = length, dates = dates, times = times)
+
+    else:
+        return redirect(url_for('Booking'))
 
 @app.route("/MySessions")
 def MySessions(client_id):
     mysessions = session.query(Appointment).filter_by(client_id = client_id).all()
     return render_template("ClientSessions.html", mysessions = mysessions, length=len(mysessions))
 
+@app.route("/?/<int:ID>",methods=['GET','POST'])
 def DeleteSession(ID):
-    if request.methods == 'POST':
-        appointment = session.query(Appointment).filter_by(ID = ID).first()
-        session.delete(appointment)
-        session.commit()
+    appointment = session.query(Appointment).filter_by(ID = ID).first()
+    session.delete(appointment)
+    session.commit()
+    return redirect(url_for('DietitianSessions'))
+
+@app.route("/??/<int:ID>",methods=['GET','POST'])
+def BookSession(ID):
+    appointment = session.query(Appointment).filter_by(ID = ID).first()
+    client = session.query(Client).filter_by(ID = login_session['id']).first()
+    appointment.Client = client
+    session.commit()
+
+    return redirect(url_for('Booking'))
 
 
-
-@app.route("/shoppingCart")
-def shoppingCart():
-	return "To be implemented"
-
-@app.route("/removeFromCart/<int:product_id>", methods = ['POST'])
-def removeFromCart(product_id):
-	return "To be implmented"
-
-@app.route("/updateQuantity/<int:product_id>", methods = ['POST'])
-def updateQuantity(product_id):
-	return "To be implemented"
-
-@app.route("/checkout", methods = ['GET', 'POST'])
-def checkout():
-	return "To be implmented"
-
-@app.route("/confirmation/<confirmation>")
-def confirmation(confirmation):
-	return "To be implemented"
-
-@app.route('/logout', methods = ['POST'])
-def logout():
-	return "To be implmented"
 
 def verify_password(email,password):
     client = session.query(Client).filter_by(Email = email).first()
