@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	{%extends "MasterPage.html"%}
+	{%block content%}
+
+
+	
+
+	<br/><br/><br/>
+       <div class="jumbotron">
+        <h1>Articles </h1>
+        <p>Check out our lastest articles</p>
+    </div>
+        <div class='container'>
+        <div class='row'>
+        <div class='col-sm-5'><h1>Nutrition</h1></div>
+        <div class='col-sm-offset-2 col-sm-5'><h1>Fitness</h1></div>
+ 
+        {%for i in range(length)%}
+        
+            {%if i % 2 != 0 %}
+                <div class='col-sm-offset-2 col-sm-5'>
+                <div class='panel panel-default'>
+                <div class='panel-heading'><img src= {{url_for("uploaded_file", filename= images[i]|string)}} class='img-rounded' name={{articles[i].ID}} width='425' height='236'></a></div>
+                <form action="{{url_for('ArticleRedirect', ID = articles[i].ID)}}">
+                <div class='panel-body'><h3> {{i.Title}}<input type='submit' class='btn btn-primary' value='Show Article' name ={{articles[i].ID}}></h3></div>
+                </form>
+                </div>
+                </div>
+            
+            {%else%}
+            
+                <div class='col-sm-5'>
+                <div class='panel panel-default'>
+                <div class='panel-heading'><img src={{url_for('uploaded_file', filename=images[i]|string)}} class='img-rounded' name={{articles[i].ID}} width='425' height='236'></div>
+                <form action="{{url_for('ArticleRedirect', ID = articles[i].ID)}}">
+                <div class='panel-body'><h3> {{i.Title}} <input type='submit' class='btn btn-primary' value='Show Article' name ={{articles[i].ID}}></h3></div>
+                </form>
+                </div>
+                </div>
+            {%endif%}
+        {%endfor%}
+        
+ 
+        </div></div>
+{%endblock%}
+</body>
+</html>

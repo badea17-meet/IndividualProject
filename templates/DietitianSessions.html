@@ -36,9 +36,11 @@
 				</div></div>
 				</form>
 				{% else %}
-				<td><font size = '4'> Booked with {{diet_list[i].Client.FirstName}} {{diet_list[i].Client.LastName}} </font></td>
+				<td><font size = '4'> Booked with {{diet_list[i].Client.FirstName}} {{diet_list[i].Client.LastName}}</font></td>
 				<div class='form-group'><div class='col-sm-offset-2 col-sm-10'>
+					<form action = "{{url_for('Profile', Email = session['email'])}}">
 					<td> <input type='submit' value='View Client' name='sessions{{i.ID}}' class='btn btn-info'/></td>
+					</form>
 				</div></div>
 				{%endif%}
 			</tr>

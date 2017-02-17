@@ -19,20 +19,51 @@
     </head>
     <body>
 
+
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-          <a href="#">About</a>
-          <a href="#">Services</a>
-          <a href="#">Clients</a>
-          <a href="#">Contact</a>
+          <div class="sidenav-userpic">
+          <a href="{{url_for('Profile', Email = session['email'])}}">
+              <img src={{url_for('uploaded_file', filename= session['pic'])}} class="img-responsive" alt="">
+          </a>
+          </div>
+          <br/>
+          <div align="center"><font style="font-size:20px; font-color:#87919E;">{{session['firstname']}} {{session['lastname']}}</font></div> 
+
+          <div align="center"><font style="font-size:17px; font-color:#87919E;">{{session['type']}}</font></div>
+
+          <br/>
+
+    {%if session['type'] == 'Dietitian' %}
+          <a href="{{url_for('BMI')}}">BMI Calculator</a>
+          <a href="{{url_for('DietitianSessions')}}">My Sessions</a>
+          <a href="{{url_for('Articles')}}">Articles</a>
+          <a href="{{url_for('AboutUs')}}">About Us</a>
+          <form action="{{ url_for('LogOut')}}">
+            <a href="#">
+              <input type='submit' value='Log Out' name='logout' class='btn btn-info'/>
+            </a>    
+          </form>
       </div>
-        
+
+    {%else%}
+          <a href="{{url_for('BMI')}}">BMI Calculator</a>
+          <a href="{{url_for('MySessions')}}">My Sessions</a>
+          <a href="{{url_for('Booking')}}">Booking</a>
+          <a href="{{url_for('Articles')}}">Articles</a>
+          <a href="{{url_for('AboutUs')}}">About Us</a>
+          <form action="{{ url_for('LogOut')}}">
+            <a href="#">
+              <input type='submit' value='Log Out' name='logout' class='btn btn-info'/>
+            </a>    
+          </form>
+      </div>
+    {%endif%}
 
 
         <div class="preloader"></div>
         <main id="top" class="masthead" role="main">
-
-          <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+            <div align="left"><span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span></div>
           <div class="container">
             <font color="white"><h1>Eating <strong>Healthy</strong> just got a little easier with us <br>
                <strong>Do not ruin</strong> your diet.</h1></font>
@@ -138,7 +169,18 @@
       .sidenav {padding-top: 15px;}
       .sidenav a {font-size: 18px;}
   }
+
+  .sidenav-userpic img {
+  float: none;
+  margin: 0 auto;
+  width: 180px;
+  height: 180px;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  border-radius: 50% !important;
+}
 </style>
+
 
 </body>
 </html>

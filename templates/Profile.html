@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+{%extends "MasterPage.html"%}
+{%block content%}
+<br /> <br />
+	<form action="{{url_for('Profile', Email = session['email'])}}">
+		<center><img src={{url_for('uploaded_file', filename=user.ImageURL|string)}} width='200' height='200' class='img-circle'/></center>
+		<br />
+        <div class='form-horizontal'><div class='row'><div class='col-sm-12'><div class='well well-sm'>
+        <center><font color='black'><h1>Hi, I'm <strong> {{user.FirstName}} {{user.LastName}}</strong></h1></font></center>
+ 
+        <h2>Personal Info</h2> <hr width='30%' class='style-seven' style='float:left'/>
+        <br /><br /><br /><br /><h4>Email: <b> {{user.Email}} </b>
+        <br /><br />Role: <b> {{session['type']}} </b>
+        <br /><br />Country: <b> {{user.Country}}</b>
+        <br /><br />Age: <b> {{user.Birthday}} </b>
+        <br /><br />Gender: <b> {{user.Gender}} </b>
+
+    </h4>
+    </div>
+    </div>
+    </div>
+    </div>
+    </form>
+{%endblock%}
+</body>
+</html>

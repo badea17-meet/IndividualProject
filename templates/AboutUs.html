@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+{%extends "MasterPage.html"%}
+{%block content%}
+
+<form action="{{url_for('AboutUs')}}">
+<div class="container">
+<font style="font-size:25px; font-color:black;">
+
+<br /> <br />
+FatFit is a multi-sided marketplace that connects dietitians with clients who seek 
+weight loss and healthy journey. <br/> <br />
+
+The moment a client signs in, he can appoint online session with a dietitian he chooses. The decision of picking a dietitian is made by the clients, who chooses the dietitians that suits him best, according to dietitians’ areas of expertise and their years of experience showed by the website. <br /> <br />
+
+As for the dietitians, they also can register themselves, and serve a wide range on clients from all over the world. A dietitian needs to open available future sessions, and in turn, a client picks this slot and books it. <br/> <br />
+
+All FatFit users, clients or dietitians, can enjoy the articles posted by FatFit, and also use the BMI calculator provided.
+</font>
+
+        <div class="container" id="explore">
+            <section class="row heroimg breath">
+                <div class="col-md-12 text-center">
+                    <img src="{{url_for('static', filename='images/logoscreen.png')}}" width="900" height="700">
+                </div>
+            </section>
+        </div>
+</div>
+</form>
+{%endblock%}
+</body>
+</html>

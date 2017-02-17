@@ -70,5 +70,11 @@ class Appointment(Base):
 	Client_id = Column(Integer, ForeignKey('client.ID'))
 
 
+class Article(Base):
+	__tablename__ = 'article'
+	ID = Column(Integer, primary_key= True)
+	Title = Column(String)
+	ImageURL = Column(String)
+	Description = Column(String)
 
 

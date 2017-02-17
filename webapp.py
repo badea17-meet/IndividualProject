@@ -51,7 +51,18 @@ def Home():
         login_session['firstname'] = user.FirstName
         login_session['lastname'] = user.LastName
         login_session['pic'] = user.ImageURL
-        return redirect(url_for('Home'))
+
+        dietitian = session.query(Dietitian).filter_by(Email = login_session['email']).first()
+        print dietitian
+        if dietitian is None:
+            login_session['type'] = 'Client'
+            return redirect(url_for('MySessions'))
+        else:
+            login_session['type'] = 'Dietitian'
+            return redirect(url_for('DietitianSessions'))
+            
+
+        
 
 
 
@@ -70,13 +81,29 @@ def ClientSignUp():
         country = request.form['country']
         gender = request.form['gender']
         picture = request.files['picture']
-        if firstname == "" or lastname == "" or email == "" or password == "" or confirmpassword != password or confirmpassword == "" or not allowed_file(picture.filename):
+
+        flag = False
+        if picture.filename == '':
+            flag = True
+            if gender == 'Male':
+                picture.filename = 'male.jpg'
+            else:
+                picture.filename = 'female.jpg'
+            
+        elif not allowed_file(picture.filename):
+            flash("Not allowed uploaded file")
+            return redirect(url_for('ClientSignUp'))              
+
+        if firstname == "" or lastname == "" or email == "" or password == "" or confirmpassword != password:
             flash("Your form is missing arguments")
             return redirect(url_for('ClientSignUp'))
         
         if session.query(Client).filter_by(Email = email).first() is not None:
             flash("A user with this email address already exists")
             return redirect(url_for('ClientSignUp'))
+
+
+
         client = Client(FirstName = firstname,
         				LastName = lastname,
         				Email=email, 
@@ -88,9 +115,15 @@ def ClientSignUp():
         				Gender = gender)
         session.add(client)
         session.commit()
-        filename = str(client.ID) + "_" + secure_filename(picture.filename)
-        picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        client.set_photo(filename)
+
+        print flag
+
+        if flag == False:
+            filename = str(client.ID) + "_" + secure_filename(picture.filename)
+            picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            client.set_photo(filename)
+        else:
+            client.set_photo(picture.filename)
         client.hash_password(password)
         session.commit()
         flash("User Created Successfully!")
@@ -113,13 +146,25 @@ def DietitianSignUp():
         country = request.form['country']
         gender = request.form['gender']
         picture = request.files['picture']
-        if firstname == "" or lastname == "" or email == "" or password == "" or confirmpassword != password or confirmpassword == "" or not allowed_file(picture.filename):
+
+        flag = False
+        if picture.filename == '':
+            if gender == 'Male':
+                picture.filename = 'male.jpg'
+            else:
+                picture.filename = 'female.jpg'
+            flag = True
+
+        elif not allowed_file(picture.filename):
+            flash("Not allowed uploaded file")
+            return redirect(url_for('ClientSignUp'))  
+
+        if firstname == "" or lastname == "" or email == "" or password == "" or confirmpassword != password:
             flash("Your form is missing arguments")
             return redirect(url_for('DietitianSignUp'))
         if session.query(Dietitian).filter_by(Email = email).first() is not None:
             flash("A user with this email address already esxists")
             return redirect(url_for('DietitianSignUp'))
-
         for x in aoelist:
             print x    
 
@@ -127,6 +172,8 @@ def DietitianSignUp():
         for i in aoelist:
         	aoe += i + ","
         aoe = aoe[:-1]
+
+
         dietitian = Dietitian(FirstName = firstname,
         				LastName = lastname,
         				Email=email, 
@@ -138,9 +185,12 @@ def DietitianSignUp():
         				Gender = gender)
         session.add(dietitian)
         session.commit()
-        filename = str(dietitian.ID) + "_" + secure_filename(picture.filename)
-        picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        dietitian.set_photo(filename)
+        if not flag:
+            filename = str(dietitian.ID) + "_" + secure_filename(picture.filename)
+            picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            dietitian.set_photo(filename)
+        else:
+            dietitian.set_photo(picture.filename)
         dietitian.hash_password(password)
         session.commit()
         flash("User Created Successfully!")
@@ -183,6 +233,36 @@ def DietitianSessions():
         session.commit()
         return redirect(url_for('DietitianSessions'))
 
+@app.route("/Profile/<string:Email>")
+def Profile(Email):
+    client = session.query(Client).filter_by(Email = Email).first()
+    dietitian = session.query(Dietitian).filter_by(Email = Email).first()
+    if client is not None:
+        return render_template("Profile.html", user = client)
+    return render_template("Profile.html", user = dietitian)
+
+@app.route("/BMICalculator")
+def BMI():
+    return render_template("BMICalculator.html")
+
+@app.route("/Articles")
+def Articles():
+    articles = session.query(Article).all()
+    length = len(articles)
+    images = []
+    for i in articles:
+        images.append(i.ImageURL)
+
+    return render_template("Articles.html", articles = articles, length = length, images = images)
+
+@app.route("/ArticleRedirect/<int:ID>")
+def ArticleRedirect(ID):
+    article = session.query(Article).filter_by(ID = ID).one()
+    return render_template("ArticleRedirect.html", article = article)
+
+@app.route('/AboutUs')
+def AboutUs():
+    return render_template('AboutUs.html')
 
 @app.route("/Booking", methods = ['GET', 'POST'])
 def Booking():
@@ -210,10 +290,23 @@ def Booking():
     else:
         return redirect(url_for('Booking'))
 
+
+@app.route("/LogOut")
+def LogOut():
+    del login_session['email']
+    del login_session['id']
+    del login_session['firstname']
+    del login_session['lastname']
+    del login_session['pic']
+    del login_session['type']
+    return redirect(url_for('Home'))
+
+
 @app.route("/MySessions")
-def MySessions(client_id):
-    mysessions = session.query(Appointment).filter_by(client_id = client_id).all()
-    return render_template("ClientSessions.html", mysessions = mysessions, length=len(mysessions))
+def MySessions():
+    client = session.query(Client).filter_by(ID = login_session['id']).one()
+    mysessions = session.query(Appointment).filter_by(Client = client).all()
+    return render_template("ClientSessions.html", mysessions = mysessions, length = len(mysessions))
 
 @app.route("/?/<int:ID>",methods=['GET','POST'])
 def DeleteSession(ID):

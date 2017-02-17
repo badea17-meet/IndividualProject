@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<title></title>
+</head>
+<body>
+	{%extends "MasterPage.html"%}
+	{%block content%}
+
+	<br /><br /><br />
+	<form action="{{url_for('BMI')}}">
+		<div class="col-sm-offset-4">
+			<iframe id="bmiCal" style="width:493px; height:517px; border:0; overflow: 0;" frameborder="0" draggable="false" scrolling="no" src="http://www.bodyengine.com/app/bmi/bmi.html?w=true&v=1"></iframe>     
+		</div>
+	</form>
+
+	{%endblock%}
+</body>
+</html>
